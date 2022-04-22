@@ -19,7 +19,6 @@ import waslim.binar.andlima.challengechapter5v13.viewmodel.ViewModelUser
 
 
 class LoginActivity : AppCompatActivity() {
-
     lateinit var sharedPreference : SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,10 +26,8 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
 
         if (getSharedPreferences("LOGIN", Context.MODE_PRIVATE).contains("EMAIL") &&
-            getSharedPreferences("LOGIN", Context.MODE_PRIVATE).contains("PASSWORD")
-        ) {
+            getSharedPreferences("LOGIN", Context.MODE_PRIVATE).contains("PASSWORD")) {
             startActivity(Intent(this, HomeActivity::class.java))
-
         }
 
 
@@ -43,15 +40,18 @@ class LoginActivity : AppCompatActivity() {
 
     private fun login(){
         btn_login.setOnClickListener {
-            if (masukanEmail_login.text.toString().isEmpty()) {
-                Toast.makeText(this, "Masukan Data Email", Toast.LENGTH_LONG).show()
-            }
-            else if (masukanPassword_login.text.toString().isEmpty()) {
-                Toast.makeText(this, "Masukan Data Password", Toast.LENGTH_LONG).show()
-            }
-            else {
-                makeApiUserLogin()
+            when {
+                masukanEmail_login.text.toString().isEmpty() -> {
+                    Toast.makeText(this, "Masukan Data Email", Toast.LENGTH_LONG).show()
+                }
+                masukanPassword_login.text.toString().isEmpty() -> {
+                    Toast.makeText(this, "Masukan Data Password", Toast.LENGTH_LONG).show()
+                }
+                else -> {
+                    sharedPreference = getSharedPreferences("LOGIN", Context.MODE_PRIVATE)
+                    makeApiUserLogin()
 
+                }
             }
         }
     }
@@ -89,6 +89,7 @@ class LoginActivity : AppCompatActivity() {
 //        viewModel.makeApiUserLogin(email, password)
 //    }
 
+
     private fun makeApiUserLogin(){
         val email = masukanEmail_login.text.toString()
         val password = masukanPassword_login.text.toString()
@@ -104,20 +105,16 @@ class LoginActivity : AppCompatActivity() {
 
                         val sharedPref = sharedPreference.edit()
                         sharedPref.putString("ID", response.body()?.responseuser?.id)
-                        sharedPref.putString("EMAIL", response.body()?.responseuser?.email)
-                        sharedPref.putString("PASSWORD", response.body()?.responseuser?.password)
+                        sharedPref.putString("EMAIL", email)
+                        sharedPref.putString("PASSWORD", password)
                         sharedPref.putString("USERNAME", response.body()?.responseuser?.username)
-                        sharedPref.putString(
-                            "COMPLETENAME",
-                            response.body()?.responseuser?.completeName
-                        )
+                        sharedPref.putString("COMPLETENAME", response.body()?.responseuser?.completeName)
                         sharedPref.putString("DOB", response.body()?.responseuser?.dateofbirth)
                         sharedPref.putString("ADDRESS", response.body()?.responseuser?.address)
                         sharedPref.apply()
                         startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
 
-                        Toast.makeText(this@LoginActivity, "Berhasil Login", Toast.LENGTH_LONG)
-                            .show()
+                        Toast.makeText(this@LoginActivity, "Berhasil Login", Toast.LENGTH_LONG).show()
 
                     } else {
 

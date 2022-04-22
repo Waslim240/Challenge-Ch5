@@ -81,6 +81,7 @@ class ProfileActivity : AppCompatActivity() {
                     .setPositiveButton("YA"){ dialogInterface: DialogInterface, i: Int ->
                         Toast.makeText(this, "Berhasil Update", Toast.LENGTH_LONG).show()
                         startActivity(Intent(this, HomeActivity::class.java))
+
                     }
                     .setNegativeButton("TIDAK"){ dialogInterface: DialogInterface, i: Int ->
                         dialogInterface.dismiss()
@@ -91,7 +92,6 @@ class ProfileActivity : AppCompatActivity() {
 
         viewModel.makeApiUserProfil(id, username, complete_name, dateofbirth, address)
     }
-
 
 
 
@@ -106,8 +106,8 @@ class ProfileActivity : AppCompatActivity() {
                     val sharedPrefs = sharedPreferences.edit()
                     sharedPrefs.clear()
                     sharedPrefs.apply()
-
-                    startActivity(Intent(this, LoginActivity::class.java))
+                    finish()
+                    startActivity(Intent(this, SplashScreenActivity::class.java))
                 }
                 .setNegativeButton("TIDAK"){ dialogInterface: DialogInterface, i: Int ->
                     dialogInterface.dismiss()

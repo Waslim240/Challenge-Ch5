@@ -38,9 +38,6 @@ class RegisterActivity : AppCompatActivity() {
 
         viewModel.getLiveRegister().observe(this, Observer {
             when {
-                username.isEmpty() -> {
-                    Toast.makeText(this, "Username Harus Di Isi", Toast.LENGTH_LONG).show()
-                }
                 email.isEmpty() -> {
                     Toast.makeText(this, "Email Harus Di Isi", Toast.LENGTH_LONG).show()
                 }
